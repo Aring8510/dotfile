@@ -22,7 +22,7 @@ set listchars=tab:>-,trail:~,eol:<
 set nobackup
 set noswapfile
 set visualbell t_vb=
-:set dictionary=javadic.dict
+autocmd FileType java :set dictionary=dic/javadic.dict
 hi NonText guibg=NONE guifg=DarkMagenta
 hi SpecialKey guibg=NONE guifg=DarkMagenta
 "全角スペース可視化
