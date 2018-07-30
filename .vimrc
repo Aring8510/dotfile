@@ -1,3 +1,5 @@
+"vimrc
+"------------------------------------(setコマンド群)----------------------------
 set fenc=utf-8
 set number
 set wrapscan
@@ -5,6 +7,8 @@ set hlsearch
 set incsearch
 "set showmatch matchtime=1
 set guioptions+=a
+set guioptions-=m
+set guioptions-=T
 set smartindent
 set autoindent
 set title
@@ -22,10 +26,12 @@ set listchars=tab:>-,trail:~,eol:<
 set nobackup
 set noswapfile
 set visualbell t_vb=
+
+"------------------------------------(辞書)----------------------------
 autocmd FileType java :set dictionary=dic/javadic.dict
+"------------------------------------(全角スペース可視化)----------------------------
 hi NonText guibg=NONE guifg=DarkMagenta
 hi SpecialKey guibg=NONE guifg=DarkMagenta
-"全角スペース可視化
 function! ZenkakuSpace()
     highlight ZenkakuSpace cterm=reverse ctermfg=DarkMagenta gui=reverse guifg=DarkMagenta
 endfunction
@@ -37,16 +43,36 @@ if has('syntax')
     augroup END
     call ZenkakuSpace()
 endif
+"------------------------------------(カラースキーム)----------------------------
 colorscheme evening
+"----------------------------------------(マッピング)----------------------------
 noremap <C-j> <esc>
 noremap! <C-j> <esc>
-inoremap <C-k> <Up>
-inoremap <C-j> <Down>
+inoremap <M-k> <UP>
+inoremap <M-j> <Down>
+inoremap <M-l> <Right>
+inoremap <M-h> <Left>
+inoremap <M-a> <Home>
+inoremap <M-e> <End>
+inoremap <M-d> <Delete>
+inoremap <M-w> <C-o>w
+inoremap <M-b> <C-o>b
+"inoremap <M-f> <C-o><C-f>
+"inoremap <M-b> <C-o><C-b>
+inoremap <M-u> <C-o><C-u>
+inoremap <M-d> <C-o><C-d>
+
+"inoremap <M-> <>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
-noremap <S-h>   ^
-noremap <S-l>   $
+noremap <C-h> d0
+noremap <C-l> d$
+"inoremap <M-> <>
+noremap <S-h> ^
+noremap <S-l> $
 noremap <space> %
+noremap <CR> o<esc>j
+noremap <S-CR> <S-o><esc>k
 nnoremap j gj
 nnoremap k gk
 :command FF tabnew
@@ -54,7 +80,7 @@ nnoremap k gk
 if &compatible
     set nocompatible
 endif
-
+"------------------------------------プラグイン(vimplug)----------------------------
 call plug#begin('~/.vim/plugged')
 Plug 'w0rp/ale'
 Plug 'Yggdroot/indentLine'
@@ -75,7 +101,9 @@ Plug 'junegunn/vim-easy-align'
 Plug 'thinca/vim-quickrun'
 Plug 'thinca/vim-ref'
 Plug 'cohama/lexima.vim'
+Plug 'airblade/vim-gitgutter'
 
+"Plug''
 call plug#end()
 "------------------------------------プラグインのカスタマイズ----------------------------
 "--------------------indentLine----------------------
@@ -101,7 +129,7 @@ imap <expr><CR> neosnippet#expandable() ? "<Plug>(neosnippet_expand_or_jump)" : 
 " タブキーで補完候補の選択. スニペット内のジャンプもタブキーでジャンプ・・・・・・③
 imap <expr><TAB> pumvisible() ? "<C-n>" : neosnippet#jumpable() ? "<Plug>(neosnippet_expand_or_jump)" : "<TAB>"
 "--------------------Vimfiler----------------------
-nnoremap <silent><C-k> :VimFiler<CR>
+nnoremap <C-k> :VimFilerExplore -split -winwidth=50 -find -no-quit<Cr>
 "--------------------NERDTree----------------------
 "autocmd vimenter * NERDTree
 " NERDTress File highlighting
@@ -166,6 +194,7 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 "--------------------migemo----------------------
 "mineo.dllを$VIMにいれて，mineo.vimを$VIM$vimfiles$にいれて，dictフォルダを＄VIMに入れる
+"g/でローマ字でも日本語をサーチ
 if has("migemo")
     set migemo
 endif
