@@ -1,5 +1,5 @@
 "vimrc
-"------------------------------------(setƒRƒ}ƒ“ƒhŒQ)----------------------------
+"------------------------------------(setã‚³ãƒãƒ³ãƒ‰ç¾¤)----------------------------
 set fenc=utf-8
 set number
 set wrapscan
@@ -26,10 +26,11 @@ set listchars=tab:>-,trail:~,eol:<
 set nobackup
 set noswapfile
 set visualbell t_vb=
+set showcmd
 
-"------------------------------------(«‘)----------------------------
+"------------------------------------(è¾æ›¸)----------------------------
 autocmd FileType java :set dictionary=dic/javadic.dict
-"------------------------------------(‘SŠpƒXƒy[ƒX‰Â‹‰»)----------------------------
+"------------------------------------(å…¨è§’ã‚¹ãƒšãƒ¼ã‚¹å¯è¦–åŒ–)----------------------------
 hi NonText guibg=NONE guifg=DarkMagenta
 hi SpecialKey guibg=NONE guifg=DarkMagenta
 function! ZenkakuSpace()
@@ -39,13 +40,13 @@ if has('syntax')
     augroup ZenkakuSpace
         autocmd!
         autocmd ColorScheme       * call ZenkakuSpace()
-        autocmd VimEnter,WinEnter * match ZenkakuSpace /@/
+        autocmd VimEnter,WinEnter * match ZenkakuSpace /ã€€/
     augroup END
     call ZenkakuSpace()
 endif
-"------------------------------------(ƒJƒ‰[ƒXƒL[ƒ€)----------------------------
+"------------------------------------(ã‚«ãƒ©ãƒ¼ã‚¹ã‚­ãƒ¼ãƒ )----------------------------
 colorscheme evening
-"----------------------------------------(ƒ}ƒbƒsƒ“ƒO)----------------------------
+"----------------------------------------(ãƒãƒƒãƒ”ãƒ³ã‚°)----------------------------
 noremap <C-j> <esc>
 noremap! <C-j> <esc>
 inoremap <M-k> <UP>
@@ -57,12 +58,8 @@ inoremap <M-e> <End>
 inoremap <M-d> <Delete>
 inoremap <M-w> <C-o>w
 inoremap <M-b> <C-o>b
-"inoremap <M-f> <C-o><C-f>
-"inoremap <M-b> <C-o><C-b>
 inoremap <M-u> <C-o><C-u>
 inoremap <M-d> <C-o><C-d>
-
-"inoremap <M-> <>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 noremap <C-h> d0
@@ -70,17 +67,24 @@ noremap <C-l> d$
 "inoremap <M-> <>
 noremap <S-h> ^
 noremap <S-l> $
-noremap <space> %
 noremap <CR> o<esc>j
 noremap <S-CR> <S-o><esc>k
 nnoremap j gj
 nnoremap k gk
+cnoremap <C-A> <Home>
+cnoremap <C-B> <Left>
+cnoremap <C-D> <Delete>
+cnoremap <C-E> <End>
+cnoremap <C-F> <Right>
+cnoremap <C-N> <Down>
+cnoremap <C-P> <Up>
+
 :command FF tabnew
-"‚±‚ê‚Í‚È‚ñ‚¾H(’s•ğ)
+"ã“ã‚Œã¯ãªã‚“ã ï¼Ÿ(ç—´å‘†)
 if &compatible
     set nocompatible
 endif
-"------------------------------------ƒvƒ‰ƒOƒCƒ“(vimplug)----------------------------
+"------------------------------------ãƒ—ãƒ©ã‚°ã‚¤ãƒ³(vimplug)----------------------------
 call plug#begin('~/.vim/plugged')
 Plug 'w0rp/ale'
 Plug 'Yggdroot/indentLine'
@@ -91,6 +95,7 @@ Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/vimfiler.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'suan/vim-instant-markdown'
+Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'LeafCage/yankround.vim'
@@ -102,31 +107,32 @@ Plug 'thinca/vim-quickrun'
 Plug 'thinca/vim-ref'
 Plug 'cohama/lexima.vim'
 Plug 'airblade/vim-gitgutter'
-
+Plug 'tyru/caw.vim'
+Plug 'easymotion/vim-easymotion'
 "Plug''
 call plug#end()
-"------------------------------------ƒvƒ‰ƒOƒCƒ“‚ÌƒJƒXƒ^ƒ}ƒCƒY----------------------------
+"------------------------------------ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚º----------------------------
 "--------------------indentLine----------------------
 let g:indentLine_color_term = 111
 let g:indentLine_color_gui = '#708090'
-let g:indentLine_char = '|' "use |, ? or „ 
+let g:indentLine_char = '|' "use |, ? or â”‚
 "--------------------neocomplete----------------------
-" Vim‹N“®‚Éneocomplete‚ğ—LŒø‚É‚·‚é
+" Vimèµ·å‹•æ™‚ã«neocompleteã‚’æœ‰åŠ¹ã«ã™ã‚‹
 let g:neocomplete#enable_at_startup = 1
-" smartcase—LŒø‰». ‘å•¶š‚ª“ü—Í‚³‚ê‚é‚Ü‚Å‘å•¶š¬•¶š‚Ì‹æ•Ê‚ğ–³‹‚·‚é
+" smartcaseæœ‰åŠ¹åŒ–. å¤§æ–‡å­—ãŒå…¥åŠ›ã•ã‚Œã‚‹ã¾ã§å¤§æ–‡å­—å°æ–‡å­—ã®åŒºåˆ¥ã‚’ç„¡è¦–ã™ã‚‹
 let g:neocomplete#enable_smart_case = 1
-" 3•¶šˆÈã‚Ì’PŒê‚É‘Î‚µ‚Ä•âŠ®‚ğ—LŒø‚É‚·‚é
+" 3æ–‡å­—ä»¥ä¸Šã®å˜èªã«å¯¾ã—ã¦è£œå®Œã‚’æœ‰åŠ¹ã«ã™ã‚‹
 let g:neocomplete#min_keyword_length = 3
-" ‹æØ‚è•¶š‚Ü‚Å•âŠ®‚·‚é
+" åŒºåˆ‡ã‚Šæ–‡å­—ã¾ã§è£œå®Œã™ã‚‹
 let g:neocomplete#enable_auto_delimiter = 1
-" 1•¶š–Ú‚Ì“ü—Í‚©‚ç•âŠ®‚Ìƒ|ƒbƒvƒAƒbƒv‚ğ•\¦
+" 1æ–‡å­—ç›®ã®å…¥åŠ›ã‹ã‚‰è£œå®Œã®ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’è¡¨ç¤º
 let g:neocomplete#auto_completion_start_length = 1
-" ƒoƒbƒNƒXƒy[ƒX‚Å•âŠ®‚Ìƒ|ƒbƒvƒAƒbƒv‚ğ•Â‚¶‚é
+" ãƒãƒƒã‚¯ã‚¹ãƒšãƒ¼ã‚¹ã§è£œå®Œã®ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã‚’é–‰ã˜ã‚‹
 inoremap <expr><BS> neocomplete#smart_close_popup()."<C-h>"
 "--------------------neosunippet----------------------
-" ƒGƒ“ƒ^[ƒL[‚Å•âŠ®Œó•â‚ÌŠm’è. ƒXƒjƒyƒbƒg‚Ì“WŠJ‚àƒGƒ“ƒ^[ƒL[‚ÅŠm’èEEEEEE‡A
+" ã‚¨ãƒ³ã‚¿ãƒ¼ã‚­ãƒ¼ã§è£œå®Œå€™è£œã®ç¢ºå®š. ã‚¹ãƒ‹ãƒšãƒƒãƒˆã®å±•é–‹ã‚‚ã‚¨ãƒ³ã‚¿ãƒ¼ã‚­ãƒ¼ã§ç¢ºå®šãƒ»ãƒ»ãƒ»ãƒ»ãƒ»ãƒ»â‘¡
 imap <expr><CR> neosnippet#expandable() ? "<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "<C-y>" : "<CR>"
-" ƒ^ƒuƒL[‚Å•âŠ®Œó•â‚Ì‘I‘ğ. ƒXƒjƒyƒbƒg“à‚ÌƒWƒƒƒ“ƒv‚àƒ^ƒuƒL[‚ÅƒWƒƒƒ“ƒvEEEEEE‡B
+" ã‚¿ãƒ–ã‚­ãƒ¼ã§è£œå®Œå€™è£œã®é¸æŠ. ã‚¹ãƒ‹ãƒšãƒƒãƒˆå†…ã®ã‚¸ãƒ£ãƒ³ãƒ—ã‚‚ã‚¿ãƒ–ã‚­ãƒ¼ã§ã‚¸ãƒ£ãƒ³ãƒ—ãƒ»ãƒ»ãƒ»ãƒ»ãƒ»ãƒ»â‘¢
 imap <expr><TAB> pumvisible() ? "<C-n>" : neosnippet#jumpable() ? "<Plug>(neosnippet_expand_or_jump)" : "<TAB>"
 "--------------------Vimfiler----------------------
 nnoremap <C-k> :VimFilerExplore -split -winwidth=50 -find -no-quit<Cr>
@@ -192,9 +198,34 @@ let g:quickrun_config = {'*': {'hook/time/enable': '1'},}
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+"--------------------caw----------------------
+" caw:hatpos:toggle
+nmap <M-m> <Plug>(caw:hatpos:toggle)
+vmap <M-m> <Plug>(caw:hatpos:toggle)
+"--------------------easy-motion----------------------
+map <space> <Plug>(easymotion-prefix)
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+" nmap s <Plug>(easymotion-overwin-f)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap <space>s <Plug>(easymotion-overwin-f2)
+
+" Turn on case insensitive feature
+let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+map <space>j <Plug>(easymotion-j)
+map <space>k <Plug>(easymotion-k)
+" Jump to first match with enter & space
+let g:EasyMotion_enter_jump_first = 1
+let g:EasyMotion_space_jump_first = 1
 "--------------------migemo----------------------
-"mineo.dll‚ğ$VIM‚É‚¢‚ê‚ÄCmineo.vim‚ğ$VIM$vimfiles$‚É‚¢‚ê‚ÄCdictƒtƒHƒ‹ƒ_‚ğVIM‚É“ü‚ê‚é
-"g/‚Åƒ[ƒ}š‚Å‚à“ú–{Œê‚ğƒT[ƒ`
+"mineo.dllã‚’$VIMã«ã„ã‚Œã¦ï¼Œmineo.vimã‚’$VIM$vimfiles$ã«ã„ã‚Œã¦ï¼Œdictãƒ•ã‚©ãƒ«ãƒ€ã‚’ï¼„VIMã«å…¥ã‚Œã‚‹
+"g/ã§ãƒ­ãƒ¼ãƒå­—ã§ã‚‚æ—¥æœ¬èªã‚’ã‚µãƒ¼ãƒ
 if has("migemo")
     set migemo
 endif
