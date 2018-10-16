@@ -1,5 +1,8 @@
 "vimrc
 "------------------------------------(setコマンド群)----------------------------
+if &compatible
+    set nocompatible
+endif
 set fenc=utf-8
 set number
 set wrapscan
@@ -80,19 +83,14 @@ cnoremap <C-N> <Down>
 cnoremap <C-P> <Up>
 
 :command FF tabnew
-"これはなんだ？(痴呆)
-if &compatible
-    set nocompatible
-endif
 "------------------------------------プラグイン(vimplug)----------------------------
 call plug#begin('~/.vim/plugged')
-Plug 'w0rp/ale'
-Plug 'Yggdroot/indentLine'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/neocomplete.vim'
+Plug 'w0rp/ale' "シンタックスチェッカー
+Plug 'Yggdroot/indentLine' "indentを示す縦棒
+Plug 'Shougo/unite.vim' "様々なShougoプラグインを結合する
+Plug 'Shougo/neocomplete.vim' "補完機能を強化する
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
-Plug 'Shougo/vimfiler.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'suan/vim-instant-markdown'
 Plug 'tpope/vim-surround'
@@ -109,7 +107,8 @@ Plug 'cohama/lexima.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tyru/caw.vim'
 Plug 'easymotion/vim-easymotion'
-"Plug''
+Plug 'terryma/vim-smooth-scroll'
+Plug 'junegunn/vim-peekaboo'
 call plug#end()
 "------------------------------------プラグインのカスタマイズ----------------------------
 "--------------------indentLine----------------------
@@ -154,6 +153,7 @@ call NERDTreeHighlightFile('java',   'yellow',    'none', 'yellow',    '#151515'
 call NERDTreeHighlightFile('c',    'darkgreen',    'none', 'darkgreen',    '#151515')
 call NERDTreeHighlightFile('js',     'Red',     'none', '#ffa500', '#151515')
 call NERDTreeHighlightFile('php',    'Magenta', 'none', '#ff00ff', '#151515')
+call NERDTreeHighlightFile('css',    'blue', 'none', '#ff00ff', '#151515')
 let g:NERDTreeShowBookmarks=1
 nnoremap <silent><C-s> :NERDTreeToggle<CR>
 "--------------------yankround----------------------
@@ -218,12 +218,20 @@ nmap <space>s <Plug>(easymotion-overwin-f2)
 let g:EasyMotion_smartcase = 1
 
 " JK motions: Line motions
-map <space>j <Plug>(easymotion-j)
-map <space>k <Plug>(easymotion-k)
+map <space>j <Plug>(easymotion-overwin-line)
+map <space>l <Plug>(easymotion-overwin-line)
+map <space>w <Plug>(easymotion-overwin-w)
 " Jump to first match with enter & space
 let g:EasyMotion_enter_jump_first = 1
 let g:EasyMotion_space_jump_first = 1
-"--------------------migemo----------------------
+"--------------------smooth-scroll----------------------
+noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 4)<CR>
+noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 4)<CR>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 8)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 8)<CR>
+"--------------------peekaboo----------------------
+let g:peekaboo_window='vert bo new'
+"--------------------mineo----------------------
 "mineo.dllを$VIMにいれて，mineo.vimを$VIM$vimfiles$にいれて，dictフォルダを＄VIMに入れる
 "g/でローマ字でも日本語をサーチ
 if has("migemo")
