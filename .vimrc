@@ -1,50 +1,56 @@
 "vimrc
 "------------------------------------(setコマンド群)----------------------------
-set background=dark "backgroundをダークにする
-set clipboard=unnamed,autoselect " *に自動でヤンクする,Visualmodeで選択したものを自動でヤンクする
-set cursorline "その行をハイライトする
-set expandtab "タブの代わりにスペースを挿入する
-set fenc=utf-8 "utf-8で編集
-set hidden "保存してなくても別のファイルを開けるようにする
-set hlsearch "検索でハイライト
-set incsearch "インクリメンタルサーチをする
-set list "不可視文字を表示
+set background=dark                " backgroundをダークにする
+set clipboard=unnamed,autoselect   " *に自動でヤンクする,Visualmodeで選択したものを自動でヤンクする
+set cursorline                     " その行をハイライトする
+set expandtab                      " タブの代わりにスペースを挿入する
+set fenc=utf-8                     " utf-8で編集
+set hidden                         " 保存してなくても別のファイルを開けるようにする
+set hlsearch                       " 検索でハイライト
+set incsearch                      " インクリメンタルサーチをする
+set list                           " 不可視文字を表示
 set listchars=tab:>-,trail:~,eol:< " 不可視文字がそれぞれこうなる
-set mouse=a "マウスを有効
-set nobackup "backupファイルを作らない
-set noswapfile "swapファイルを作らない
-set number "行番号を表示
-set shiftwidth=4 "space4つでインデント
-set showcmd "コマンドを表示
-" set smartindent " 1行目のインデントに基づくがc言語構文らしくやる
-set autoindent " 1行目のインデントに基づくがc言語構文らしくやる
-set tabstop=4 " tabのしめる大きさ
-set title "タイトルを表示
-set visualbell t_vb= "ビーブ音を鳴らさない
-set wildmenu " コマンドの候補が見えるようになる
-set winaltkeys=no " ALTキー押下時にメニューにフォーカスしないようにする
-set wrapscan " 末尾まで検索したら頭までもどる
-set splitright " vsplitで右にウィンドウ生成
-set splitbelow " splitで下にウィンドウ生成
+set mouse=a                        " マウスを有効
+set nobackup                       " backupファイルを作らない
+set noswapfile                     " swapファイルを作らない
+set number                         " 行番号を表示
+set shiftwidth=4                   " space4つでインデント
+set showcmd                        " コマンドを表示
+" set smartindent                  " 1行目のインデントに基づくがc言語構文らしくやる
+set autoindent                     " 1行目のインデントに基づく
+set tabstop=4                      " tabのしめる大きさ
+set title                          " タイトルを表示
+set visualbell t_vb=               " ビーブ音を鳴らさない
+set wildmenu                       " コマンドの候補が見えるようになる
+set winaltkeys=no                  " ALTキー押下時にメニューにフォーカスしないようにする
+set wrapscan                       " 末尾まで検索したら頭までもどる
+set splitright                     " vsplitで右にウィンドウ生成
+set splitbelow                     " splitで下にウィンドウ生成
+set smarttab                       " インデントを一気に消す
 syntax on
 
 filetype plugin indent on " インデントをファイルに合わせる
 "------------------------------------(辞書)----------------------------
 autocmd FileType java :set dictionary=dic/javadic.dict
 "------------------------------------(全角スペース可視化)----------------------------
-hi NonText guibg=NONE guifg=DarkMagenta
-hi SpecialKey guibg=NONE guifg=DarkMagenta
+"デフォルトのZenkakuSpaceを定義
 function! ZenkakuSpace()
-    highlight ZenkakuSpace cterm=reverse ctermfg=DarkMagenta gui=reverse guifg=DarkMagenta
+  highlight ZenkakuSpace cterm=underline ctermfg=darkgrey gui=underline guifg=darkgrey
 endfunction
+
 if has('syntax')
-    augroup ZenkakuSpace
-        autocmd!
-        autocmd ColorScheme       * call ZenkakuSpace()
-        autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
-    augroup END
-    call ZenkakuSpace()
+  augroup ZenkakuSpace
+    autocmd!
+    " ZenkakuSpaceをカラーファイルで設定するなら次の行は削除
+    autocmd ColorScheme       * call ZenkakuSpace()
+    " 全角スペースのハイライト指定
+    autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
+    autocmd VimEnter,WinEnter * match ZenkakuSpace '\%u3000'
+  augroup END
+  call ZenkakuSpace()
 endif
+"----------------------------------------(colorscheme)----------------------------
+colorscheme evening
 "----------------------------------------(マッピング)----------------------------
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
@@ -64,7 +70,6 @@ inoremap <M-e> <End>
 inoremap <M-b> <C-o>b
 inoremap <M-w> <C-o>w
 inoremap <M-u> <C-o><C-u>
-inoremap <M-d> <C-o><C-d>
 inoremap <M-d> <Delete>
 nnoremap <space>1 :b1<CR>
 nnoremap <space>2 :b2<CR>
@@ -76,45 +81,53 @@ nnoremap <space>7 :b7<CR>
 nnoremap <space>8 :b8<CR>
 nnoremap <space>9 :b9<CR>
 nnoremap <space><space> :b#<CR>
-nnoremap <space>h :bnext<CR>
-nnoremap <space>l :bprevious<CR>
+nnoremap <space>l :bnext<CR>
+nnoremap <space>h :bprevious<CR>
 nnoremap <space>d :bd<CR>
 nnoremap j gj
 nnoremap k gk
-noremap <C-h> d0
-noremap <C-l> d$
-noremap <CR> o<esc>j
-noremap <S-CR> <S-o><esc>k
-noremap <S-h> ^
-noremap <S-l> $
+nnoremap x "_x
+noremap <CR> o<esc>
+noremap <S-CR> <S-o><esc>
+noremap <C-h> ^
+noremap <C-l> $
+noremap <S-y> y$
+noremap <f2> :PlugUpdate<CR>
+noremap <f5> <ESC>o<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR><CR>
+noremap <f6> <ESC>i<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR><CR>
+noremap <C-f5> :redraw<CR>
 
 :command FF tabnew
 "------------------------------------プラグイン(vimplug)----------------------------
-call plug#begin('~/.vim/plugged') " VimPlugを用いてプラグイン管理
-Plug 'LeafCage/yankround.vim' " ペースト時のレジスタの操作ｃ
-Plug 'Shougo/neocomplete.vim' "補完機能を強化する
-Plug 'Shougo/neosnippet' " コードスニペットの強化
-Plug 'Shougo/neosnippet-snippets' " 更に強化
-Plug 'Shougo/unite.vim' "様々なShougoプラグインを結合する
-Plug 'Yggdroot/indentLine' "indentを示す縦棒
-Plug 'airblade/vim-gitgutter' " gitの差分の+-を左に表示
-Plug 'bling/vim-bufferline' " 開いているbufferをステータスバーに表示する
-Plug 'cohama/lexima.vim' " 括弧をスマートに
-Plug 'easymotion/vim-easymotion' " 移動をスマートに
-Plug 'junegunn/vim-easy-align' " テキスト整形=などに合わせる
-Plug 'junegunn/vim-peekaboo' " レジスタの中身を見る
-Plug 'luochen1990/rainbow' " 括弧がレインボー!!
-Plug 'scrooloose/nerdtree' " ファイルツリーを表示する
-Plug 'simeji/winresizer' " ウィンドウの大きさ変更
-"Plug 'Markdown' " マークダウンを認識する
-"Plug 'suan/vim-instant-markdown' " マークダウンのプレビュー
-Plug 'thinca/vim-quickrun' " クイックランをする
-Plug 'tpope/vim-fugitive' " gitの操作
-Plug 'tpope/vim-surround' " 括弧やらで囲む
-Plug 'tyru/caw.vim' " M-mでコメントトグル
-Plug 'vim-airline/vim-airline' " 便利なステータスバー
-Plug 'w0rp/ale' "シンタックスチェッカー
-Plug 'jacoborus/tender.vim' " ColorScheme
+call plug#begin('~/.vim/plugged')     " VimPlugを用いてプラグイン管理
+Plug 'LeafCage/yankround.vim'         " ペースト時のレジスタの操作
+Plug 'Shougo/neocomplete.vim'         " 補完機能を強化する
+Plug 'Shougo/neosnippet'              " コードスニペットの強化
+Plug 'Shougo/neosnippet-snippets'     " 更に強化
+Plug 'Shougo/unite.vim'               " 様々なShougoプラグインを結合する
+Plug 'Yggdroot/indentLine'            " indentを示す縦棒
+Plug 'airblade/vim-gitgutter'         " gitの差分の+-を左に表示
+Plug 'bling/vim-bufferline'           " 開いているbufferをステータスバーに表示する
+Plug 'cohama/lexima.vim'              " 括弧をスマートに
+Plug 'easymotion/vim-easymotion'      " 移動をスマートに
+Plug 'junegunn/vim-easy-align'        " テキスト整形=などに合わせる
+Plug 'junegunn/vim-peekaboo'          " マクロとレジスタの中身を見る
+Plug 'luochen1990/rainbow'            " 括弧がレインボー!!
+Plug 'scrooloose/nerdtree'            " ファイルツリーを表示する
+" Plug 'Xuyuanp/nerdtree-git-plugin'  " NERDTreeにgitの状態を表示
+Plug 'simeji/winresizer'              " ウィンドウの大きさ変更
+" Plug 'Markdown'                     " マークダウンを認識する
+" Plug 'suan/vim-instant-markdown'    " マークダウンのプレビュー
+Plug 'thinca/vim-quickrun'            " クイックランをする
+Plug 'tpope/vim-fugitive'             " gitの操作
+Plug 'tpope/vim-surround'             " 括弧やらで囲む
+Plug 'tyru/caw.vim'                   " M-mでコメントトグル
+Plug 'vim-airline/vim-airline'        " 便利なステータスバー
+Plug 'vim-airline/vim-airline-themes' " airlineのスタイルの変更
+Plug 'w0rp/ale'                       " シンタックスチェッカー
+Plug 'jacoborus/tender.vim'           " ColorScheme
+Plug 'vim-scripts/taglist.vim'        " ctagsのジャンプ機能やツリー表示
+Plug 'tpope/vim-speeddating'          " 日時をインクリメントデクリメントする
 call plug#end()
 "------------------------------------プラグインのカスタマイズ----------------------------
 "--------------------indentLine----------------------
@@ -139,6 +152,11 @@ inoremap <expr><BS> neocomplete#smart_close_popup()."<C-h>"
 imap <expr><CR> neosnippet#expandable() ? "<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "<C-y>" : "<CR>"
 " タブキーで補完候補の選択. スニペット内のジャンプもタブキーでジャンプ・・・・・・③
 imap <expr><TAB> pumvisible() ? "<C-n>" : neosnippet#jumpable() ? "<Plug>(neosnippet_expand_or_jump)" : "<TAB>"
+"--------------------airline----------------------
+" タブバーのカスタマイズを有効にする
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_tab_nr = 0
+
 "--------------------NERDTree----------------------
 "autocmd vimenter * NERDTree
 " NERDTress File highlighting
@@ -160,6 +178,19 @@ call NERDTreeHighlightFile('py',     'yellow',  'none', 'yellow',  '#151515')
 call NERDTreeHighlightFile('yml',    'yellow',  'none', 'yellow',  '#151515')
 let g:NERDTreeShowBookmarks=1
 nnoremap <silent><C-s> :NERDTreeToggle<CR>
+nnoremap <silent><space>s :NERDTreeToggle<CR>
+autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
+" Close all open buffers on entering a window if the only
+" buffer that's left is the NERDTree buffer
+function! s:CloseIfOnlyNerdTreeLeft()
+  if exists("t:NERDTreeBufName")
+    if bufwinnr(t:NERDTreeBufName) != -1
+      if winnr("$") == 1
+        q
+      endif
+    endif
+  endif
+endfunction
 "--------------------yankround----------------------
 nmap p <Plug>(yankround-p)
 nmap P <Plug>(yankround-P)
@@ -211,7 +242,7 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " Turn on case insensitive feature
 let g:EasyMotion_smartcase = 1
 map <space>j <Plug>(easymotion-overwin-line)
-nmap <space>s <Plug>(easymotion-overwin-f2)
+nmap <space>t <Plug>(easymotion-overwin-f2)
 map <space>k <Plug>(easymotion-overwin-line)
 map <space>w <Plug>(easymotion-overwin-w)
 " Jump to first match with enter & space
@@ -219,6 +250,13 @@ let g:EasyMotion_enter_jump_first = 1
 let g:EasyMotion_space_jump_first = 1
 "--------------------peekaboo----------------------
 let g:peekaboo_window='vert bo new'
+"--------------------taglist----------------------
+"set tags = tags
+let Tlist_Ctags_Cmd = "/usr/local/bin/ctags" " ctagsのコマンド
+let Tlist_Show_One_File = 1 "現在表示中のファイルのみのタグしか表示しない
+let Tlist_Use_Right_Window = 1 "右側にtag listのウインドうを表示する
+let Tlist_Exit_OnlyWindow = 1 "taglistのウインドウだけならVimを閉じる
+"map <silent> <space>c :TlistToggle<CR> " lでtaglistウインドウを開いたり閉じたり出来るショートカット
 "--------------------mineo----------------------
 "mineo.dllを$VIMにいれて，mineo.vimを$VIM$vimfiles$にいれて，dictフォルダを＄VIMに入れる
 "g/でローマ字でも日本語をサーチ
