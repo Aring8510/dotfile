@@ -1,5 +1,5 @@
 "vimrc
-"------------------------------------(setコマンド群)----------------------------
+"------------------------------------(オプション)----------------------------
 set background=dark                " backgroundをダークにする
 set clipboard=unnamed,autoselect   " *に自動でヤンクする,Visualmodeで選択したものを自動でヤンクする
 set cursorline                     " その行をハイライトする
@@ -27,6 +27,8 @@ set wrapscan                       " 末尾まで検索したら頭までもど�
 set splitright                     " vsplitで右にウィンドウ生成
 set splitbelow                     " splitで下にウィンドウ生成
 set smarttab                       " インデントを一気に消す
+set scrolloff=0                    " スクロールしたときに
+set guioptions+=e
 syntax on
 
 filetype plugin indent on " インデントをファイルに合わせる
@@ -84,6 +86,9 @@ nnoremap <space><space> :b#<CR>
 nnoremap <space>l :bnext<CR>
 nnoremap <space>h :bprevious<CR>
 nnoremap <space>d :bd<CR>
+nnoremap <space>new :new<CR>
+nnoremap <space>ver :vnew<CR>
+nnoremap <space>ee :enew<CR>
 nnoremap j gj
 nnoremap k gk
 nnoremap x "_x
@@ -93,7 +98,7 @@ noremap <C-h> ^
 noremap <C-l> $
 noremap <S-y> y$
 noremap <f2> :PlugUpdate<CR>
-noremap <f5> <ESC>o<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR><CR>
+noremap <f5> <ESC>o<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR>
 noremap <f6> <ESC>i<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR><CR>
 noremap <C-f5> :redraw<CR>
 
@@ -118,6 +123,7 @@ Plug 'scrooloose/nerdtree'            " ファイルツリーを表示する
 Plug 'simeji/winresizer'              " ウィンドウの大きさ変更
 " Plug 'Markdown'                     " マークダウンを認識する
 " Plug 'suan/vim-instant-markdown'    " マークダウンのプレビュー
+Plug 'plasticboy/vim-markdown'        " 
 Plug 'thinca/vim-quickrun'            " クイックランをする
 Plug 'tpope/vim-fugitive'             " gitの操作
 Plug 'tpope/vim-surround'             " 括弧やらで囲む
@@ -128,6 +134,7 @@ Plug 'w0rp/ale'                       " シンタックスチェッカー
 Plug 'jacoborus/tender.vim'           " ColorScheme
 Plug 'vim-scripts/taglist.vim'        " ctagsのジャンプ機能やツリー表示
 Plug 'tpope/vim-speeddating'          " 日時をインクリメントデクリメントする
+Plug 'mhinz/vim-startify'             " スタート画面をカスタマイズ
 call plug#end()
 "------------------------------------プラグインのカスタマイズ----------------------------
 "--------------------indentLine----------------------
@@ -158,7 +165,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tab_nr = 0
 
 "--------------------NERDTree----------------------
-"autocmd vimenter * NERDTree
+" autocmd vimenter * NERDTree
 " NERDTress File highlighting
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
     exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
@@ -257,6 +264,19 @@ let Tlist_Show_One_File = 1 "現在表示中のファイルのみのタグしか
 let Tlist_Use_Right_Window = 1 "右側にtag listのウインドうを表示する
 let Tlist_Exit_OnlyWindow = 1 "taglistのウインドウだけならVimを閉じる
 "map <silent> <space>c :TlistToggle<CR> " lでtaglistウインドウを開いたり閉じたり出来るショートカット
+"--------------------startify----------------------
+let g:startify_custom_indices = ['a', 's', 'd', 'f', 'g', 'h', 'l',';']
+let g:startify_bookmarks = [ {'rc': '~/_vimrc'}]
+let g:startify_custom_header = []
+let g:startify_commands = [
+    \ {'help': 'h ref'},
+    \ {'pu': 'PlugUpdate'},
+    \ ]
+autocmd User Startified nmap <buffer> o <plug>(startify-open-buffers)
+let g:startify_change_to_dir = 1
+let g:startify_padding_left = 1
+let g:startify_files_number = 9
+
 "--------------------mineo----------------------
 "mineo.dllを$VIMにいれて，mineo.vimを$VIM$vimfiles$にいれて，dictフォルダを＄VIMに入れる
 "g/でローマ字でも日本語をサーチ
