@@ -30,6 +30,9 @@ set smarttab                       " インデントを一気に消す
 set scrolloff=0                    " スクロールしたときに
 set guioptions+=e
 set splitright                     " 新規ウィンドウを右に開く
+if has("unix")
+    set guifont=DejaVu\ Sans\ Mono\ 13
+endif
 syntax on
 
 filetype plugin indent on " インデントをファイルに合わせる
