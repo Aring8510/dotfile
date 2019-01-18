@@ -29,6 +29,7 @@ set splitbelow                     " splitで下にウィンドウ生成
 set smarttab                       " インデントを一気に消す
 set scrolloff=0                    " スクロールしたときに
 set guioptions+=e
+set splitright                     " 新規ウィンドウを右に開く
 syntax on
 
 filetype plugin indent on " インデントをファイルに合わせる
@@ -96,13 +97,19 @@ noremap <CR> o<esc>
 noremap <S-CR> <S-o><esc>
 noremap <C-h> ^
 noremap <C-l> $
+noremap <S-h> ^
+noremap <S-l> $
+" デフォルトではS-yは行全体のヤンクだが，行末までヤンクに変更する
 noremap <S-y> y$
 noremap <f2> :PlugUpdate<CR>
+" フォントサイズをVimを開いたときの状態に戻す
+noremap <f4> :Fontzoom!<CR>
 noremap <f5> <ESC>o<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR>
 noremap <f6> <ESC>i<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR><CR>
 noremap <C-f5> :redraw<CR>
 
 :command FF tabnew
+:command Vt vert ter
 "------------------------------------プラグイン(vimplug)----------------------------
 call plug#begin('~/.vim/plugged')     " VimPlugを用いてプラグイン管理
 Plug 'LeafCage/yankround.vim'         " ペースト時のレジスタの操作
@@ -125,6 +132,7 @@ Plug 'simeji/winresizer'              " ウィンドウの大きさ変更
 " Plug 'suan/vim-instant-markdown'    " マークダウンのプレビュー
 Plug 'plasticboy/vim-markdown'        " 
 Plug 'thinca/vim-quickrun'            " クイックランをする
+Plug 'thinca/vim-fontzoom'            " フォントサイズを+-で変更する
 Plug 'tpope/vim-fugitive'             " gitの操作
 Plug 'tpope/vim-surround'             " 括弧やらで囲む
 Plug 'tyru/caw.vim'                   " M-mでコメントトグル
