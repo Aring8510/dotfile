@@ -90,9 +90,6 @@ nnoremap <space><space> :b#<CR>
 nnoremap <space>l :bnext<CR>
 nnoremap <space>h :bprevious<CR>
 nnoremap <space>d :bd<CR>
-nnoremap <space>new :new<CR>
-nnoremap <space>ver :vnew<CR>
-nnoremap <space>ee :enew<CR>
 nnoremap j gj
 nnoremap k gk
 nnoremap x "_x
@@ -110,6 +107,7 @@ noremap <f4> :Fontzoom!<CR>
 noremap <f5> <ESC>o<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR>
 noremap <f6> <ESC>i<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR><CR>
 noremap <C-f5> :redraw<CR>
+let mapleader = "\<f9>"
 
 :command FF tabnew
 :command Vt vert ter
@@ -146,6 +144,7 @@ Plug 'jacoborus/tender.vim'           " ColorScheme
 Plug 'vim-scripts/taglist.vim'        " ctagsのジャンプ機能やツリー表示
 Plug 'tpope/vim-speeddating'          " 日時をインクリメントデクリメントする
 Plug 'mhinz/vim-startify'             " スタート画面をカスタマイズ
+Plug 'vim-scripts/TeTrIs.vim'
 call plug#end()
 "------------------------------------プラグインのカスタマイズ----------------------------
 "--------------------indentLine----------------------
