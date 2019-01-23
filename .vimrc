@@ -5,6 +5,7 @@ set clipboard=unnamed,autoselect   " *に自動でヤンクする,Visualmodeで�
 set cursorline                     " その行をハイライトする
 set expandtab                      " タブの代わりにスペースを挿入する
 set fenc=utf-8                     " utf-8で編集
+set fileencodings=ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932,utf-8
 set hidden                         " 保存してなくても別のファイルを開けるようにする
 set hlsearch                       " 検索でハイライト
 set incsearch                      " インクリメンタルサーチをする
