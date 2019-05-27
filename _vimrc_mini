@@ -1,0 +1,100 @@
+"vimrc
+filetype plugin indent on " インデントをファイルに合わせる
+"------------------------------------(オプション)----------------------------
+set background=dark                " backgroundをダークにする
+set clipboard=unnamed,autoselect   " *に自動でヤンクする,Visualmodeで選択したものを自動でヤンクする
+set cursorline                     " その行をハイライトする
+set expandtab                      " タブの代わりにスペースを挿入する
+set fenc=utf-8                     " utf-8で編集
+set fileencodings=utf-8,sjis,cp932,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp
+set hidden                         " 保存してなくても別のファイルを開けるようにする
+set hlsearch                       " 検索でハイライト
+set incsearch                      " インクリメンタルサーチをする
+set list                           " 不可視文字を表示
+set listchars=tab:>-,trail:~,eol:< " 不可視文字がそれぞれこうなる
+set mouse=a                        " マウスを有効
+set nobackup                       " backupファイルを作らない
+set noswapfile                     " swapファイルを作らない
+set number                         " 行番号を表示
+" set relativenumber
+set shiftwidth=4                   " space4つでインデント
+set showcmd                        " コマンドを表示
+" set smartindent                  " 1行目のインデントに基づくがc言語構文らしくやる
+set autoindent                     " 1行目のインデントに基づく
+set tabstop=4                      " tabのしめる大きさ
+set title                          " タイトルを表示
+set visualbell t_vb=               " ビーブ音を鳴らさない
+set wildmenu                       " コマンドの候補が見えるようになる
+set winaltkeys=no                  " ALTキー押下時にメニューにフォーカスしないようにする
+set wrapscan                       " 末尾まで検索したら頭までもどる
+set splitright                     " vsplitで右にウィンドウ生成
+set splitbelow                     " splitで下にウィンドウ生成
+set smarttab                       " インデントを一気に消す
+set scrolloff=0                    " スクロールしたときに
+set guioptions+=e
+set splitright                     " 新規ウィンドウを右に開く
+set undofile                       " undoの永続化
+set ignorecase                     " 検索時大文字小文字を区別しない
+set smartcase                      " 検索時大文字が入力されたら区別する
+"----------------------------------------(マッピング)----------------------------
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+cnoremap <C-B> <Left>
+cnoremap <C-F> <Right>
+cnoremap <C-D> <Delete>
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
+inoremap <C-f> <Right>
+inoremap <C-b> <Left>
+inoremap <M-k> <UP>
+inoremap <M-j> <Down>
+inoremap <M-l> <Right>
+inoremap <M-h> <Left>
+inoremap <M-a> <Home>
+inoremap <M-e> <End>
+inoremap <M-b> <C-o>b
+inoremap <M-w> <C-o>w
+inoremap <M-u> <C-o><C-u>
+inoremap <M-d> <Delete>
+nnoremap <space>1 :b2<CR>
+nnoremap <space>2 :b2<CR>
+nnoremap <space>3 :b3<CR>
+nnoremap <space>4 :b4<CR>
+nnoremap <space>5 :b5<CR>
+nnoremap <space>6 :b6<CR>
+nnoremap <space>7 :b7<CR>
+nnoremap <space>8 :b8<CR>
+nnoremap <space>9 :b9<CR>
+nnoremap <space><space> :b#<CR>
+nnoremap <space>l :bnext<CR>
+nnoremap <space>h :bprevious<CR>
+nnoremap <space>d :bd<CR>
+nnoremap j gj
+nnoremap k gk
+nnoremap x "_x
+nnoremap s "_s
+nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
+noremap <CR> o<esc>
+noremap <S-CR> <S-o><esc>
+noremap <C-h> ^
+noremap <C-l> $
+noremap <S-h> ^
+noremap <S-l> $
+" デフォルトではS-yは行全体のヤンクだが，行末までヤンクに変更する
+noremap <S-y> y$
+noremap <f2> :PlugUpdate<CR>
+" フォントサイズをVimを開いたときの状態に戻す
+noremap <F4> :Fontzoom!<CR>
+noremap <f5> <ESC>o<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR>
+noremap <f6> <ESC>i<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR><CR>
+noremap <F7> :Fontzoom!<CR>
+noremap <C-f5> :redraw<CR>
+let mapleader = "\<f9>"
+
+:command FF tabnew
+:command VV vert ter
+
+"----------------------------------------(colorscheme)----------------------------
+colorscheme evning

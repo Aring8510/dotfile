@@ -5,7 +5,7 @@ set clipboard=unnamed,autoselect   " *に自動でヤンクする,Visualmodeで�
 set cursorline                     " その行をハイライトする
 set expandtab                      " タブの代わりにスペースを挿入する
 set fenc=utf-8                     " utf-8で編集
-set fileencodings=ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932,utf-8
+set fileencodings=utf-8,sjis,cp932,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp
 set hidden                         " 保存してなくても別のファイルを開けるようにする
 set hlsearch                       " 検索でハイライト
 set incsearch                      " インクリメンタルサーチをする
@@ -15,6 +15,7 @@ set mouse=a                        " マウスを有効
 set nobackup                       " backupファイルを作らない
 set noswapfile                     " swapファイルを作らない
 set number                         " 行番号を表示
+" set relativenumber
 set shiftwidth=4                   " space4つでインデント
 set showcmd                        " コマンドを表示
 " set smartindent                  " 1行目のインデントに基づくがc言語構文らしくやる
@@ -31,7 +32,13 @@ set smarttab                       " インデントを一気に消す
 set scrolloff=0                    " スクロールしたときに
 set guioptions+=e
 set splitright                     " 新規ウィンドウを右に開く
-if has("unix")
+set undofile                       " undoの永続化
+set ignorecase                     " 検索時大文字小文字を区別しない
+set smartcase                      " 検索時大文字が入力されたら区別する
+if has('win32') || has ('win64')   " Undoファイルの保存場所
+    set undodir=~/AppData/Local/Temp/vim_un/
+endif
+if has("unix")                     " フォントの指定
     set guifont=DejaVu\ Sans\ Mono\ 13
 endif
 syntax on
@@ -41,23 +48,21 @@ filetype plugin indent on " インデントをファイルに合わせる
 autocmd FileType java :set dictionary=dic/javadic.dict
 "------------------------------------(全角スペース可視化)----------------------------
 "デフォルトのZenkakuSpaceを定義
-function! ZenkakuSpace()
-  highlight ZenkakuSpace cterm=underline ctermfg=darkgrey gui=underline guifg=darkgrey
-endfunction
-
-if has('syntax')
-  augroup ZenkakuSpace
-    autocmd!
-    " ZenkakuSpaceをカラーファイルで設定するなら次の行は削除
-    autocmd ColorScheme       * call ZenkakuSpace()
-    " 全角スペースのハイライト指定
-    autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
-    autocmd VimEnter,WinEnter * match ZenkakuSpace '\%u3000'
-  augroup END
-  call ZenkakuSpace()
-endif
-"----------------------------------------(colorscheme)----------------------------
-colorscheme evening
+"function! ZenkakuSpace()
+"  highlight ZenkakuSpace cterm=underline ctermfg=darkgrey gui=underline guifg=darkgrey
+"endfunction
+"
+"if has('syntax')
+"  augroup ZenkakuSpace
+"    autocmd!
+"    " ZenkakuSpaceをカラーファイルで設定するなら次の行は削除
+"    autocmd ColorScheme       * call ZenkakuSpace()
+"    " 全角スペースのハイライト指定
+"    autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
+"    autocmd VimEnter,WinEnter * match ZenkakuSpace '\%u3000'
+"  augroup END
+"  call ZenkakuSpace()
+"endif
 "----------------------------------------(マッピング)----------------------------
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
@@ -66,6 +71,8 @@ cnoremap <C-F> <Right>
 cnoremap <C-D> <Delete>
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
 inoremap <C-f> <Right>
 inoremap <C-b> <Left>
 inoremap <M-k> <UP>
@@ -78,7 +85,7 @@ inoremap <M-b> <C-o>b
 inoremap <M-w> <C-o>w
 inoremap <M-u> <C-o><C-u>
 inoremap <M-d> <Delete>
-nnoremap <space>1 :b1<CR>
+nnoremap <space>1 :b2<CR>
 nnoremap <space>2 :b2<CR>
 nnoremap <space>3 :b3<CR>
 nnoremap <space>4 :b4<CR>
@@ -94,6 +101,8 @@ nnoremap <space>d :bd<CR>
 nnoremap j gj
 nnoremap k gk
 nnoremap x "_x
+nnoremap s "_s
+nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
 noremap <CR> o<esc>
 noremap <S-CR> <S-o><esc>
 noremap <C-h> ^
@@ -104,14 +113,15 @@ noremap <S-l> $
 noremap <S-y> y$
 noremap <f2> :PlugUpdate<CR>
 " フォントサイズをVimを開いたときの状態に戻す
-noremap <f4> :Fontzoom!<CR>
+noremap <F4> :Fontzoom!<CR>
 noremap <f5> <ESC>o<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR>
 noremap <f6> <ESC>i<C-r>=strftime("%Y-%m-%d %H:%M:%S")<CR><CR>
+noremap <F7> :Fontzoom!<CR>
 noremap <C-f5> :redraw<CR>
 let mapleader = "\<f9>"
 
 :command FF tabnew
-:command Vt vert ter
+:command VV vert ter
 "------------------------------------プラグイン(vimplug)----------------------------
 call plug#begin('~/.vim/plugged')     " VimPlugを用いてプラグイン管理
 Plug 'LeafCage/yankround.vim'         " ペースト時のレジスタの操作
@@ -119,8 +129,9 @@ Plug 'Shougo/neocomplete.vim'         " 補完機能を強化する
 Plug 'Shougo/neosnippet'              " コードスニペットの強化
 Plug 'Shougo/neosnippet-snippets'     " 更に強化
 Plug 'Shougo/unite.vim'               " 様々なShougoプラグインを結合する
+"Plug 'Shougo/vimproc.vim'
 Plug 'Yggdroot/indentLine'            " indentを示す縦棒
-Plug 'airblade/vim-gitgutter'         " gitの差分の+-を左に表示
+" Plug 'airblade/vim-gitgutter'         " gitの差分の+-を左に表示
 Plug 'bling/vim-bufferline'           " 開いているbufferをステータスバーに表示する
 Plug 'cohama/lexima.vim'              " 括弧をスマートに
 Plug 'easymotion/vim-easymotion'      " 移動をスマートに
@@ -141,13 +152,27 @@ Plug 'tyru/caw.vim'                   " M-mでコメントトグル
 Plug 'vim-airline/vim-airline'        " 便利なステータスバー
 Plug 'vim-airline/vim-airline-themes' " airlineのスタイルの変更
 Plug 'w0rp/ale'                       " シンタックスチェッカー
-Plug 'jacoborus/tender.vim'           " ColorScheme
+" Plug 'jacoborus/tender.vim'           " ColorScheme
 Plug 'vim-scripts/taglist.vim'        " ctagsのジャンプ機能やツリー表示
 Plug 'tpope/vim-speeddating'          " 日時をインクリメントデクリメントする
 Plug 'mhinz/vim-startify'             " スタート画面をカスタマイズ
-Plug 'vim-scripts/TeTrIs.vim'
+Plug 'raphamorim/lucario'
+"Plug 'vim-scripts/TeTrIs.vim'
+"Plug 'osyo-manga/vim-sound'
 call plug#end()
+"----------------------------------------(colorscheme)----------------------------
+"colorscheme lucario
+
+autocmd ColorScheme * hi Comment      ctermfg=44 ctermbg=NONE cterm=NONE guifg=#98fb98 guibg=NONE gui=NONE
+autocmd ColorScheme * hi Cursor       cterm=NONE guifg=#2b3e50 guibg=#f8f8f2
+autocmd ColorScheme * hi CursorLine   ctermfg=NONE ctermbg=236 cterm=NONE guifg=NONE guibg=#405160 gui=NONE
+autocmd ColorScheme * hi CursorColumn ctermfg=NONE ctermbg=236 cterm=NONE guifg=NONE guibg=#405160 gui=NONE
+autocmd ColorScheme * hi Search       ctermfg=23 ctermbg=186 cterm=NONE guifg=#2b3e50 guibg=#e6db74 gui=NONE
+
 "------------------------------------プラグインのカスタマイズ----------------------------
+"--------------------ale-----------------------------
+let g:ale_cpp_gcc_options = '-std=c++17 -Wall -Wextra'
+
 "--------------------indentLine----------------------
 let g:indentLine_color_term = 111
 let g:indentLine_color_gui = '#708090'
@@ -165,6 +190,7 @@ let g:neocomplete#enable_auto_delimiter = 1
 let g:neocomplete#auto_completion_start_length = 1
 " バックスペースで補完のポップアップを閉じる
 inoremap <expr><BS> neocomplete#smart_close_popup()."<C-h>"
+" エンターキーで補完候補の確定. スニペットの展開もエンターキーで確定・・・・・・②
 "--------------------neosunippet----------------------
 " エンターキーで補完候補の確定. スニペットの展開もエンターキーで確定・・・・・・②
 imap <expr><CR> neosnippet#expandable() ? "<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "<C-y>" : "<CR>"
@@ -195,6 +221,7 @@ call NERDTreeHighlightFile('php',    'Magenta', 'none', '#ff00ff', '#151515')
 call NERDTreeHighlightFile('py',     'yellow',  'none', 'yellow',  '#151515')
 call NERDTreeHighlightFile('yml',    'yellow',  'none', 'yellow',  '#151515')
 let g:NERDTreeShowBookmarks=1
+"let g:NERDTreeChDirMode=1
 nnoremap <silent><C-s> :NERDTreeToggle<CR>
 nnoremap <silent><space>s :NERDTreeToggle<CR>
 autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
@@ -280,8 +307,9 @@ let g:startify_custom_indices = ['a', 's', 'd', 'f', 'g', 'h', 'l',';']
 let g:startify_bookmarks = [ {'rc': '~/_vimrc'}]
 let g:startify_custom_header = []
 let g:startify_commands = [
-    \ {'help': 'h ref'},
     \ {'pu': 'PlugUpdate'},
+    \ {'rr': 'h ref'},
+    \ {'rs': 'h startify.txt'},
     \ ]
 autocmd User Startified nmap <buffer> o <plug>(startify-open-buffers)
 let g:startify_change_to_dir = 1
@@ -294,3 +322,29 @@ let g:startify_files_number = 9
 if has("migemo")
     set migemo
 endif
+"--------------------SE----------------------
+" function
+"if has('win32') || has ('win64')
+"    function! PlaySE(name)
+"        silent! exec '!start /b sox C:\Users\cs17064\Music\' . a:name . '.wav -t waveaudio'
+"    endfunction
+"
+"    " 補完を閉じる
+"    " autocmd CompleteDone * call PlaySE("shift")
+"    " バッファ移動
+"    autocmd BufEnter * call PlaySE("switch")
+"    " 入力
+"    " autocmd InsertCharPre * call PlaySE("input")
+"    " 保存
+"    autocmd BufWrite * call PlaySE("save")
+"    " インサートモード IN / OUT
+"    autocmd InsertEnter * call PlaySE("in")
+"    autocmd InsertLeave * call PlaySE("out")
+"    " text delete/yank
+"    autocmd TextYankPost * call PlaySE("del")
+"    " Vim 起動/終了
+"    autocmd VimEnter * call PlaySE("ve")
+"    autocmd VimLeave * call PlaySE("vl")
+"    " カレントディレクトリが変更したとき
+"    "autocmd DirChanged * call PlaySE("cd")
+"endif
